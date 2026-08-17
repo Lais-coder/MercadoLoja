@@ -2,6 +2,7 @@ import { Response, NextFunction } from 'express';
 import { UserRole } from '@prisma/client';
 import { prisma } from '../lib/prisma';
 import { AuthRequest } from './auth';
+import { paramAsString } from '../lib/params';
 
 export interface AuthenticatedUser {
   id: string;
@@ -48,7 +49,7 @@ export function requireAdmin(req: RoleRequest, res: Response, next: NextFunction
 }
 
 export function requireStoreAccess(req: RoleRequest, res: Response, next: NextFunction) {
-  const storeId = req.params.storeId;
+  const storeId = paramAsString(req.params.storeId);
 
   if (!storeId) {
     res.status(400).json({ error: 'Loja não informada' });

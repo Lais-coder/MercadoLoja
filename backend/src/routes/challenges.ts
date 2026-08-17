@@ -1,5 +1,6 @@
 import { Router, Response } from 'express';
 import { prisma } from '../lib/prisma';
+import { getRouteParam } from '../lib/params';
 import { authMiddleware } from '../middleware/auth';
 import { attachUser, requireAdmin, requireStoreAccess, RoleRequest } from '../middleware/roles';
 
@@ -70,7 +71,7 @@ export const storeChallengesRouter = Router({ mergeParams: true });
 
 storeChallengesRouter.get('/', async (req, res: Response) => {
   try {
-    const { storeId } = req.params;
+    const storeId = getRouteParam(req.params, 'storeId');
     const challenges = await prisma.boxChallenge.findMany({
       where: { storeId },
       orderBy: { createdAt: 'desc' },
@@ -88,7 +89,7 @@ storeChallengesRouter.post(
   requireStoreAccess,
   async (req: RoleRequest, res: Response) => {
     try {
-      const { storeId } = req.params;
+      const storeId = getRouteParam(req.params, 'storeId');
       const { title, description, discountPercent, couponCode } = req.body;
 
       if (!title || discountPercent == null || !couponCode) {

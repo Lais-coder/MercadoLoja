@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { prisma } from '../lib/prisma';
 import { authMiddleware } from '../middleware/auth';
 import { attachUser, requireAdmin, requireStoreUser, RoleRequest } from '../middleware/roles';
+import { getRouteParam } from '../lib/params';
 
 const router = Router();
 
@@ -41,7 +42,7 @@ storeAccessRouter.get(
   requireAdmin,
   async (req: RoleRequest, res: Response) => {
     try {
-      const { storeId } = req.params;
+      const storeId = getRouteParam(req.params, 'storeId');
 
       const users = await prisma.user.findMany({
         where: { storeId, role: 'STORE' },
@@ -63,7 +64,7 @@ storeAccessRouter.post(
   requireAdmin,
   async (req: RoleRequest, res: Response) => {
     try {
-      const { storeId } = req.params;
+      const storeId = getRouteParam(req.params, 'storeId');
       const { email, password, name } = req.body;
 
       if (!email || !password || !name) {
