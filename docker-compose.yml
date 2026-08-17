@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: mercadofacil-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mercadofacil
+    ports:
+      - "5432:5432"
+    volumes:
+      - mercadofacil_pgdata:/var/lib/postgresql/data
+
+volumes:
+  mercadofacil_pgdata:

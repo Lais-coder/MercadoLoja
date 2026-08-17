@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum CategoryType {
+  MODA
+  BELEZA
+  ALIMENTACAO
+}
+
+enum UserRole {
+  ADMIN
+  STORE
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole @default(ADMIN)
+  storeId   String?
+  store     Store?   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Store {
+  id           String           @id @default(cuid())
+  name         String
+  slug         String?          @unique
+  boxNumber    String
+  category     CategoryType
+  avatarLetter String
+  whatsapp     String?
+  logoUrl      String?
+  products     Product[]
+  employees    Employee[]
+  promotions   StorePromotion[]
+  challenges   BoxChallenge[]
+  users        User[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model Employee {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  storeId   String
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model StorePromotion {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  active      Boolean  @default(true)
+  storeId     String
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  sizes       String[]
+  description String?
+  price       Float    @default(0)
+  imageUrl    String
+  images      String[] @default([])
+  featured    Boolean  @default(false)
+  storeId     String
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Highlight {
+  id        String       @id @default(cuid())
+  title     String
+  imageUrl  String
+  category  CategoryType
+  boxNumber String
+  order     Int          @default(0)
+  active    Boolean      @default(true)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model BoxChallenge {
+  id              String   @id @default(cuid())
+  title           String
+  description     String?
+  discountPercent Float
+  couponCode      String
+  active          Boolean  @default(true)
+  order           Int      @default(0)
+  storeId         String
+  store           Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
