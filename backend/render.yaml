@@ -18,7 +18,7 @@ services:
       - key: JWT_EXPIRES_IN
         value: 7d
       - key: CORS_ORIGIN
-        sync: false
+        value: https://mercado-loja.vercel.app,http://localhost:5173,http://localhost:5175
       - key: PUBLIC_API_URL
         sync: false
 

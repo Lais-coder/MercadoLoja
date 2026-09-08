@@ -9,7 +9,7 @@
    - `DATABASE_URL` = Internal Database URL
    - `JWT_SECRET` = string aleatória longa
    - `JWT_EXPIRES_IN` = `7d`
-   - `CORS_ORIGIN` = `https://SEU-APP.vercel.app,http://localhost:5173`
+   - `CORS_ORIGIN` = `https://mercado-loja.vercel.app,http://localhost:5173`
    - `PUBLIC_API_URL` = `https://mercadoloja.onrender.com`
 5. Shell após deploy: `npx tsx prisma/seed.ts`
 

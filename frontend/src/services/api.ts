@@ -37,8 +37,9 @@ export function resolveMediaUrl(url: string): string {
 
 async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const token = localStorage.getItem('token');
+  const method = (options?.method ?? 'GET').toUpperCase();
   const headers: HeadersInit = {
-    'Content-Type': 'application/json',
+    ...(method !== 'GET' && method !== 'HEAD' ? { 'Content-Type': 'application/json' } : {}),
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...options?.headers,
   };

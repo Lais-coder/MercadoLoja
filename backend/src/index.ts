@@ -1,8 +1,8 @@
 import express from 'express';
-import cors from 'cors';
+import cors, { type CorsOptions } from 'cors';
 import helmet from 'helmet';
 import path from 'path';
-import { env, isAllowedCorsOrigin } from './config/env';
+import { env, resolveCorsOrigin } from './config/env';
 import authRoutes from './routes/auth';
 import highlightsRoutes from './routes/highlights';
 import productsRoutes from './routes/products';
@@ -19,17 +19,18 @@ import searchRoutes from './routes/search';
 
 const app = express();
 
+const corsOptions: CorsOptions = {
+  origin: (origin, callback) => {
+    callback(null, resolveCorsOrigin(origin));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      callback(null, isAllowedCorsOrigin(origin));
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  })
-);
 app.use(express.json());
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
