@@ -50,9 +50,9 @@ export default function LocationSection() {
 
           <div className="overflow-hidden h-80 lg:h-[28rem] shadow-lg ring-1 ring-border/60 card">
             <img
-              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop"
+              src="/images/cpc-geraldo-machado.jpg"
               alt="Centro Público Comercial Geraldo Machado"
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+              className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-700"
             />
           </div>
         </div>
