@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken';
 import { prisma } from '../lib/prisma';
 import { env } from '../config/env';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { seedDemoData } from '../lib/seedDemo';
+import { UserRole } from '@prisma/client';
 
 const router = Router();
 
@@ -31,6 +33,39 @@ router.post('/register', async (req, res: Response) => {
     res.status(201).json(user);
   } catch {
     res.status(500).json({ error: 'Erro ao registrar usuário' });
+  }
+});
+
+router.post('/seed-demo', async (req, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      res.status(400).json({ error: 'Email e senha são obrigatórios' });
+      return;
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { password: true, role: true },
+    });
+
+    if (!user || user.role !== UserRole.ADMIN) {
+      res.status(401).json({ error: 'Credenciais inválidas' });
+      return;
+    }
+
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) {
+      res.status(401).json({ error: 'Credenciais inválidas' });
+      return;
+    }
+
+    const result = await seedDemoData();
+    res.json(result);
+  } catch (err) {
+    console.error('Erro ao executar seed:', err);
+    res.status(500).json({ error: 'Erro ao popular dados de demonstração' });
   }
 });
 
