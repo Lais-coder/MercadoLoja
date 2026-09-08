@@ -6,7 +6,8 @@ export const env = {
   port: Number(process.env.PORT) || 3001,
   jwtSecret: process.env.JWT_SECRET || 'dev-secret-change-me',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
-  corsOrigin: (process.env.CORS_ORIGIN || 'http://localhost:5173')
+  corsOrigin: (process.env.CORS_ORIGIN || 'http://localhost:5173,http://localhost:5175')
     .split(',')
-    .map((o) => o.trim()),
+    .map((o) => o.trim())
+    .filter(Boolean),
 };

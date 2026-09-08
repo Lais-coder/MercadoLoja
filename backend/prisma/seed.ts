@@ -328,7 +328,7 @@ async function main() {
     data: [
       {
         title: 'Renove o guarda-roupa com a Dona Maria - Box 12',
-        imageUrl: 'https://images.unsplash.com/photo-1441984904996-e0b6a68756d7?w=600&h=400&fit=crop',
+        imageUrl: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=400&fit=crop',
         category: CategoryType.MODA,
         boxNumber: '12',
         order: 1,

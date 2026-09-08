@@ -1,22 +1,27 @@
+# Blueprint Render — use "New > Blueprint" na raiz do repositório
+# ou configure o Web Service com Root Directory: backend
+
 services:
   - type: web
     name: mercadoloja
     runtime: docker
+    rootDir: backend
     plan: free
-    dockerfilePath: ./Dockerfile
-    dockerContext: .
+    region: oregon
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 3001
+      - key: JWT_EXPIRES_IN
+        value: 7d
       - key: DATABASE_URL
         fromDatabase:
           name: mercadofacil-db
           property: connectionString
       - key: JWT_SECRET
         generateValue: true
-      - key: JWT_EXPIRES_IN
-        value: 7d
       - key: CORS_ORIGIN
         sync: false
       - key: PUBLIC_API_URL
@@ -25,3 +30,4 @@ services:
 databases:
   - name: mercadofacil-db
     plan: free
+    region: oregon
