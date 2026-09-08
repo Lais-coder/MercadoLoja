@@ -21,8 +21,11 @@ import type {
   CreateChallengeData,
 } from '../types';
 
-const API_ROOT = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '');
-const API_BASE = API_ROOT ? `${API_ROOT}/api` : '/api';
+const API_ROOT = (import.meta.env.VITE_API_URL || 'https://mercadoloja.onrender.com').replace(
+  /\/$/,
+  ''
+);
+const API_BASE = `${API_ROOT}/api`;
 
 export function resolveMediaUrl(url: string): string {
   if (!url) return url;

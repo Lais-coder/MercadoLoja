@@ -11,3 +11,18 @@ export const env = {
     .map((o) => o.trim())
     .filter(Boolean),
 };
+
+export function isAllowedCorsOrigin(origin: string | undefined): boolean {
+  if (!origin) return true;
+  if (env.corsOrigin.includes(origin)) return true;
+
+  try {
+    const { hostname } = new URL(origin);
+    if (hostname === 'localhost' || hostname === '127.0.0.1') return true;
+    if (hostname.endsWith('.vercel.app')) return true;
+  } catch {
+    return false;
+  }
+
+  return false;
+}
